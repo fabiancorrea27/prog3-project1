@@ -22,13 +22,6 @@ public class GroupService {
     @Value("${maxSchedules}")
     private int MAX_SCHEDULES;
 
-    public GroupService() {
-        List<Schedule> schedules = new SimpleUptcList<>();
-        schedules.add(new Schedule(LocalTime.parse("10:00:00"), LocalTime.parse("11:00:00"), DayOfWeek.MONDAY));
-        Group group = new Group(1, 2, schedules);
-        groupList.add(group);
-    }
-
     public void addGroup(Group newGroup) throws ProjectExeption {
         if (verifySchedulesError(newGroup)) {
             throw new ProjectExeption(TypeMessage.SCHEDULES_CONFLICT);
@@ -39,11 +32,11 @@ public class GroupService {
         }
     }
 
-    public void deleteGroup(String codeSubject, String idLocation) throws ProjectExeption {
+    public void deleteGroup(int codeSubject, int idLocation) throws ProjectExeption {
         boolean exist = false;
         for (Group group : groupList) {
-            if (group.getIdLocation() == Integer.parseInt(idLocation)
-                    && (group.getSubjectCode() == Integer.parseInt(codeSubject))) {
+            if (group.getIdLocation() == idLocation
+                    && (group.getSubjectCode() == codeSubject)) {
                 exist = true;
                 groupList.remove(group);
             }

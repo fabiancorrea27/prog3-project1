@@ -44,7 +44,7 @@ public class GroupController {
     }
 
     @DeleteMapping("/${deleteGroupMapping}")
-    public ResponseEntity<Object> deleteGroup(@PathVariable String codeSubject, @PathVariable String idLocation) {
+    public ResponseEntity<Object> deleteGroup(@PathVariable int codeSubject, @PathVariable int idLocation) {
         try {
             groupService.deleteGroup(codeSubject, idLocation);
             return ResponseEntity.status(HttpStatus.OK).body(TypeMessage.DELETED);

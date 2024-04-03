@@ -2,12 +2,15 @@ package co.edu.uptc.project1.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import co.edu.uptc.linked_list.SimpleUptcList;
 import co.edu.uptc.project1.exeptions.ProjectExeption;
 import co.edu.uptc.project1.exeptions.TypeMessage;
 import co.edu.uptc.project1.models.Location;
 import lombok.Getter;
 
+@Service
 public class LocationService {
     @Getter
     private List<Location> locationList = new SimpleUptcList<Location>();
@@ -16,10 +19,10 @@ public class LocationService {
         locationList.add(location);
     }
 
-    public void deleteSubject(String id) throws ProjectExeption {
+    public void deleteSubject(int id) throws ProjectExeption {
         boolean exists = false;
         for (Location location : locationList) {
-            if (location.getId() == Integer.parseInt(id)) {
+            if (location.getId() == id) {
                 exists = true;
                 locationList.remove(location);
             }

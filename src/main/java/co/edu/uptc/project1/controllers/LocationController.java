@@ -2,6 +2,7 @@ package co.edu.uptc.project1.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +23,8 @@ import co.edu.uptc.project1.services.LocationService;
 @RequestMapping("/${locationRequest}")
 public class LocationController {
 
-    LocationService locationService = new LocationService();
+    @Autowired
+    LocationService locationService;
 
     @GetMapping
     public ResponseEntity<Object> getLocations() {
@@ -42,7 +44,7 @@ public class LocationController {
     }
 
     @DeleteMapping("/${deleteLocationMapping}")
-    public ResponseEntity<Object> deleteLocacion(@PathVariable String idLocation) {
+    public ResponseEntity<Object> deleteLocacion(@PathVariable int idLocation) {
         try {
             locationService.deleteSubject(idLocation);
             return ResponseEntity.status(HttpStatus.OK).body(TypeMessage.DELETED);

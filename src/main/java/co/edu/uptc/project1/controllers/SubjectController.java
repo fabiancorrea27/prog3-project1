@@ -2,6 +2,7 @@ package co.edu.uptc.project1.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +23,8 @@ import co.edu.uptc.project1.services.SubjectService;
 @RequestMapping("/${subjectRequest}")
 public class SubjectController {
 
-    SubjectService subjectService = new SubjectService();
+    @Autowired
+    SubjectService subjectService;
 
     @GetMapping()
     public ResponseEntity<Object> getSubjects() {
@@ -42,7 +44,7 @@ public class SubjectController {
     }
 
     @DeleteMapping("/${deleteSubjectMapping}")
-    public ResponseEntity<Object> deleteSubject(@PathVariable String codeSubject) {
+    public ResponseEntity<Object> deleteSubject(@PathVariable int codeSubject) {
         try {
             subjectService.deleteSubject(codeSubject);
             return ResponseEntity.status(HttpStatus.OK).body(TypeMessage.DELETED);
@@ -63,4 +65,9 @@ public class SubjectController {
         }
     }
 
+    @GetMapping("/${sameLocation}")
+    public ResponseEntity<Object> sameLocation(@PathVariable int idLocation){
+        List<DtoSubject> dtoSubjectList = DtoSubject.fromSubjectList(subjectService.subjectsWithSameLocation(idLocation));
+        return ResponseEntity.status(HttpStatus.OK).body(dtoSubjectList);
+    }
 }
