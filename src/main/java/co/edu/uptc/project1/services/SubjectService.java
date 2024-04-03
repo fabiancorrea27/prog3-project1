@@ -10,7 +10,6 @@ import co.edu.uptc.linked_list.SimpleUptcList;
 import co.edu.uptc.project1.exeptions.ProjectExeption;
 import co.edu.uptc.project1.exeptions.TypeMessage;
 import co.edu.uptc.project1.models.Group;
-import co.edu.uptc.project1.models.Location;
 import co.edu.uptc.project1.models.Schedule;
 import co.edu.uptc.project1.models.Subject;
 import lombok.Getter;
@@ -23,12 +22,10 @@ public class SubjectService {
     private List<Subject> subjectList = new SimpleUptcList<Subject>();
 
     private List<Group> groupList;
-    private List<Location> locationList;
 
     @Autowired
-    public SubjectService(GroupService groupService, LocationService locationService) {
+    public SubjectService(GroupService groupService) {
         this.groupList = groupService.getGroupList();
-        this.locationList = locationService.getLocationList();
     }
 
     public void addSubject(Subject subject) {

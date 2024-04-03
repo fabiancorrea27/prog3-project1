@@ -7,6 +7,8 @@ public enum TypeMessage {
     NOT_ADDED(HttpStatus.BAD_REQUEST.value(), "Not added", 410),
     MAX_SCHEDULES(HttpStatus.BAD_REQUEST.value(), "Schedules Number Exceeded", 414),
     SCHEDULES_CONFLICT(HttpStatus.BAD_REQUEST.value(), "Schedules Conflict", 415),
+    NON_EXISTENT_LOCATION(HttpStatus.BAD_REQUEST.value(), "The location doesn't exist", 416),
+    NON_EXISTENT_SUBJECT(HttpStatus.BAD_REQUEST.value(), "The subject doesn't exist", 417),
     INFORMATION_INCOMPLETE(HttpStatus.BAD_REQUEST.value(), "Information Incomplete", 430),
     CANT_DELETE(HttpStatus.BAD_REQUEST.value(), "Can't Delete", 411),
     NOT_UPDATED(HttpStatus.BAD_REQUEST.value(), "Not Update", 412),

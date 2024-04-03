@@ -18,6 +18,8 @@ import co.edu.uptc.project1.dto.DtoGroup;
 import co.edu.uptc.project1.exeptions.ProjectExeption;
 import co.edu.uptc.project1.exeptions.TypeMessage;
 import co.edu.uptc.project1.services.GroupService;
+import co.edu.uptc.project1.services.LocationService;
+import co.edu.uptc.project1.services.SubjectService;
 
 @RestController
 @RequestMapping("/${groupRequest}")
@@ -25,6 +27,10 @@ public class GroupController {
 
     @Autowired
     GroupService groupService;
+    @Autowired
+    SubjectService subjectService;
+    @Autowired
+    LocationService locationService;
 
     @GetMapping()
     public ResponseEntity<Object> getGroups() {
@@ -36,7 +42,7 @@ public class GroupController {
     public ResponseEntity<Object> addGroup(@RequestBody DtoGroup dtoGroup) {
         try {
             DtoGroup.checkNullFields(dtoGroup);
-            groupService.addGroup(DtoGroup.fromDtoGroup(dtoGroup));
+            groupService.addGroup(DtoGroup.fromDtoGroup(dtoGroup), locationService.getLocationList(), subjectService.getSubjectList());
             return ResponseEntity.status(HttpStatus.OK).body(dtoGroup);
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getExceptionMessage().getCodeHttp()).body(e.getExceptionMessage());
@@ -57,7 +63,7 @@ public class GroupController {
     public ResponseEntity<Object> updateSubject(@RequestBody DtoGroup dtoGroup) {
         try {
             DtoGroup.checkNullFields(dtoGroup);
-            groupService.updateGroup(DtoGroup.fromDtoGroup(dtoGroup));
+            groupService.updateGroup(DtoGroup.fromDtoGroup(dtoGroup), locationService.getLocationList());
             return ResponseEntity.status(HttpStatus.OK).body(TypeMessage.UPDATED);
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getExceptionMessage().getCodeHttp()).body(e.getExceptionMessage());

@@ -1,6 +1,5 @@
 package co.edu.uptc.project1.services;
 
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -11,25 +10,51 @@ import co.edu.uptc.linked_list.SimpleUptcList;
 import co.edu.uptc.project1.exeptions.ProjectExeption;
 import co.edu.uptc.project1.exeptions.TypeMessage;
 import co.edu.uptc.project1.models.Group;
+import co.edu.uptc.project1.models.Location;
 import co.edu.uptc.project1.models.Schedule;
+import co.edu.uptc.project1.models.Subject;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Service
+@NoArgsConstructor
 public class GroupService {
     @Getter
     private List<Group> groupList = new SimpleUptcList<Group>();
-
+    
     @Value("${maxSchedules}")
     private int MAX_SCHEDULES;
 
-    public void addGroup(Group newGroup) throws ProjectExeption {
+    public void addGroup(Group newGroup, List<Location> locationList, List<Subject> subjectList) throws ProjectExeption {
         if (verifySchedulesError(newGroup)) {
             throw new ProjectExeption(TypeMessage.SCHEDULES_CONFLICT);
+        } else if (verifyLocationAvailability(newGroup, locationList)) {
+            throw new ProjectExeption(TypeMessage.NON_EXISTENT_LOCATION);
+        } else if (verifySubjectAvailability(newGroup, subjectList)) {
+            throw new ProjectExeption(TypeMessage.NON_EXISTENT_SUBJECT);
         } else if (newGroup.getSchedules().size() > MAX_SCHEDULES) {
             throw new ProjectExeption(TypeMessage.MAX_SCHEDULES);
         } else {
             groupList.add(newGroup);
         }
+    }
+
+    private boolean verifyLocationAvailability(Group newGroup, List<Location> locationList) {
+        for (Location location : locationList) {
+            if (location.getId() == newGroup.getIdLocation()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean verifySubjectAvailability(Group newGroup , List<Subject> subjectList) {
+        for (Subject subject : subjectList) {
+            if (subject.getCode() == newGroup.getSubjectCode()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void deleteGroup(int codeSubject, int idLocation) throws ProjectExeption {
@@ -47,13 +72,15 @@ public class GroupService {
         }
     }
 
-    public Group updateGroup(Group group) throws ProjectExeption {
+    public Group updateGroup(Group group, List<Location> locationList) throws ProjectExeption {
         Group groupToReturn = group;
         boolean exists = false;
         if (group.getSchedules().size() > MAX_SCHEDULES) {
             throw new ProjectExeption(TypeMessage.MAX_SCHEDULES);
         } else if (verifySchedulesError(group)) {
             throw new ProjectExeption(TypeMessage.SCHEDULES_CONFLICT);
+        } else if (verifyLocationAvailability(group, locationList)) {
+            throw new ProjectExeption(TypeMessage.NON_EXISTENT_LOCATION);
         }
         for (Group listGroup : groupList) {
             if (listGroup.getIdLocation() == group.getIdLocation()
@@ -66,6 +93,11 @@ public class GroupService {
             throw new ProjectExeption(TypeMessage.NOT_UPDATED);
         }
         return groupToReturn;
+    }
+
+    private void updateGroupFields(Group groupToChange, Group group) {
+        groupToChange.setIdLocation(group.getIdLocation());
+        groupToChange.setSchedules(group.getSchedules());
     }
 
     private boolean verifySchedulesError(Group newGroup) {
@@ -110,10 +142,5 @@ public class GroupService {
         boolean departureConflict = (newDepartureTime.isAfter(entryTime) && newDepartureTime.isBefore(departureTime)) ||
                 newDepartureTime.equals(departureTime);
         return entryConflict || departureConflict;
-    }
-
-    private void updateGroupFields(Group groupToChange, Group group) {
-        groupToChange.setIdLocation(group.getIdLocation());
-        groupToChange.setSchedules(group.getSchedules());
     }
 }
