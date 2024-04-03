@@ -90,7 +90,7 @@ public class GroupService {
                 // Verifica si los horarios tienen el mismo dia
                 if (scheduleFromListGroup.getDay().equals(scheduleFromNewGroup.getDay())) {
                     // Verifica si los tiempos se interfieren
-                    if (verifyTimesScheduleConflict(scheduleFromListGroup, scheduleFromNewGroup)) {
+                    if (verifySchedulesTimeConflict(scheduleFromListGroup, scheduleFromNewGroup)) {
                         return true;
                     }
                 }
@@ -99,7 +99,7 @@ public class GroupService {
         return false;
     }
 
-    private boolean verifyTimesScheduleConflict(Schedule schedule, Schedule newSchedule) {
+    private boolean verifySchedulesTimeConflict(Schedule schedule, Schedule newSchedule) {
         LocalTime entryTime = schedule.getEntryTime();
         LocalTime departureTime = schedule.getDepartureTime();
         LocalTime newEntryTime = newSchedule.getEntryTime();

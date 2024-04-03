@@ -76,4 +76,10 @@ public class SubjectController {
         List<DtoSubject> dtoSubjectList = DtoSubject.fromSubjectList(subjectService.subjectsWithMultipleGroups());
         return ResponseEntity.status(HttpStatus.OK).body(dtoSubjectList);
     }
+
+    @GetMapping("/${sameSchedule}")
+    public ResponseEntity<Object> sameSchedule(@PathVariable String dayOfWeek){
+        List<DtoSubject> dtoSubjectList = DtoSubject.fromSubjectList(subjectService.subjectsWithSameSchedule(dayOfWeek));
+        return ResponseEntity.status(HttpStatus.OK).body(dtoSubjectList);
+    }
 }
