@@ -70,7 +70,7 @@ public class SubjectService {
                     // Encuentra la asignatura del grupo y la agrega a la lista
                     if (subject.getCode() == group.getSubjectCode()) {
                         // Verifica si ya esta agregada la Asignatura a la lista
-                        if(!subjectsWithSameLocation.contains(subject)){
+                        if (!subjectsWithSameLocation.contains(subject)) {
                             subjectsWithSameLocation.add(subject);
                         }
                     }
@@ -78,5 +78,23 @@ public class SubjectService {
             }
         }
         return subjectsWithSameLocation;
+    }
+
+    public List<Subject> subjectsWithMultipleGroups() {
+        List<Subject> subjectsWithMultipleGroups = new SimpleUptcList<>();
+        for (Subject subject : subjectList) {
+            // Cuenta la cantidad de veces que aparece una asignatura
+            int subjectCounter = 0;
+            for (Group group : groupList) {
+                if (subject.getCode() == group.getSubjectCode()) {
+                    subjectCounter++;
+                }
+            }
+            // Agrega la asignatura a la lista si esta tiene varias apariciones en distintos grupos
+            if (subjectCounter > 1) {
+                subjectsWithMultipleGroups.add(subject);
+            }
+        }
+        return subjectsWithMultipleGroups;
     }
 }

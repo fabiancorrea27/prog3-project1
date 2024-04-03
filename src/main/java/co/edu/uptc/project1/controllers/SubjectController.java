@@ -70,4 +70,10 @@ public class SubjectController {
         List<DtoSubject> dtoSubjectList = DtoSubject.fromSubjectList(subjectService.subjectsWithSameLocation(idLocation));
         return ResponseEntity.status(HttpStatus.OK).body(dtoSubjectList);
     }
+
+    @GetMapping("/${multipleGroups}")
+    public ResponseEntity<Object> multipleGroups(){
+        List<DtoSubject> dtoSubjectList = DtoSubject.fromSubjectList(subjectService.subjectsWithMultipleGroups());
+        return ResponseEntity.status(HttpStatus.OK).body(dtoSubjectList);
+    }
 }
